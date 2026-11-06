@@ -1,0 +1,82 @@
+class Cliente:
+    """Representa a un cliente como un nodo individual en la cola."""
+    def __init__(self, numero):
+        self.numero = numero
+        self.siguiente = None
+
+class ColaClientes:
+    """Administra la estructura de la cola bajo el principio FIFO."""
+    def __init__(self):
+        self.frente = None
+        self.final = None
+
+    def esta_vacia(self):
+        return self.frente is None
+
+    def encolar(self, numero):
+        """Agrega un nuevo cliente al final de la cola."""
+        nuevo_cliente = Cliente(numero)
+        if self.esta_vacia():
+            self.frente = nuevo_cliente
+            self.final = nuevo_cliente
+        else:
+            self.final.siguiente = nuevo_cliente
+            self.final = nuevo_cliente
+
+    def desencolar(self):
+        """Retira y devuelve el cliente que está al frente de la cola."""
+        if self.esta_vacia():
+            print("La cola está vacía, no hay clientes para atender.")
+            return None
+        
+        cliente_atendido = self.frente
+        self.frente = self.frente.siguiente
+        
+       
+        if self.frente is None:
+            self.final = None
+            
+        print(f"Cliente atendido: {cliente_atendido.numero}")
+        return cliente_atendido.numero
+
+    def peek(self):
+        """Muestra el número del cliente al frente sin retirarlo."""
+        if self.esta_vacia():
+            print("La cola está vacía.")
+            return None
+        print(f"Próximo cliente a ser atendido: {self.frente.numero}")
+        return self.frente.numero
+
+    def mostrar(self):
+        """Recorre e imprime los números de los clientes desde el frente hasta el final."""
+        actual = self.frente
+        elementos = []
+        while actual is not None:
+            elementos.append(str(actual.numero))
+            actual = actual.siguiente
+        elementos.append("None")
+        print(" -> ".join(elementos))
+
+
+
+if __name__ == "__main__":
+    
+    banco = ColaClientes()
+
+   
+    banco.encolar(1)
+    banco.encolar(2)
+    banco.encolar(3)
+    banco.encolar(4)
+
+    print("Contenido de la cola:")
+    banco.mostrar()
+
+    
+    banco.peek()
+
+    
+    banco.desencolar()
+    
+    print("Contenido de la cola después de desencolar:")
+    banco.mostrar()
